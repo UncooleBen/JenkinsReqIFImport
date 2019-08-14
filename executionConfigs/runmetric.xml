@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="testsuite" default="run" basedir=".">
+	<!-- THIS IS AN EXAMPLE SCRIPT. PLEASE CHANGE IT TO SUIT YOU EXECUTION ENVIRONMENT.-->
+	
+	<!-- Set the  base directory which can be used to store the results. It is also used in this example script as base directory for various properties. 
+	See the following propertes in this file for usage.
+	change it to suit you need. -->	
+	<property name="baseDir" value="D:\JUNTAO\jenkins-project-config" />
+
+	<!-- Set the path of the PREEvision installion. Change to your PREEvision intallation path-->
+	<property name="preevision-home" value="D:\Program Files\Vector\PREEvision_v903_x86_64" />
+
+	<!-- Set PREEvision workspace. Default is "ws" and the installation path. Change this parameter if you use another
+	workspace path, for example in the user directory -->
+	<property name="preevision-wokspace" value="D:\JUNTAO\903ws\ws" />
+	
+	<!-- Set the following three parameters for loading a file-based E/E model -->
+	<!--<property name="run.from.file" value="true" />
+	<property name="init.db.with.file" value="false" />
+	<property name="test.model.name" value="${preevision-home}\ws\projectfolder\projectfile.eea" /> -->
+
+	<!-- Set the path of the property file "parameters.properties" in which login data and the metric to be executed are defined -->
+	<!-- An example can be found under ${preevision-home}\res\tools\automatedMetricExecution\executionConfigs\parameters.properties -->
+	<property name="vipropertyfile" value="D:\JUNTAO\jenkins-project-config\executionConfigs\parameters.properties" />
+
+	<!-- DO NOT CHANGE THIS PROPERTY -->
+	<property name="vipropertykey" value="metricExecutorPropetyFile" />
+
+	<!-- Set the path of property file "library.xml". -->
+	<property name="library-file" value="D:\JUNTAO\jenkins-project-config\executionConfigs\library.xml" />
+
+	<!-- DO NOT CHANGE THIS PROPERTY -->
+	<property name="eclipse-home" value="${preevision-home}" />
+
+	<!-- DO NOT CHANGE THIS PROPERTY -->
+	<property name="plugin-name" value="vi.automatedmetricexecution" />
+	
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+
+	<target name="backup-reqifzs">
+		<copy todir="D:\JUNTAO\jenkins\tmp">
+			<fileset dir="D:\JUNTAO\jenkins\reqifzs"/>
+		</copy>
+	</target>
+	
+	<target name="main-loop">
+		<foreach param="loopvar" target="import">
+			<fileset dir="D:\JUNTAO\jenkins\tmp" casesensitive="yes">
+				<include name="*.reqifz"/>
+			</fileset>
+		</foreach>
+	</target>
+	
+	<target name="import" >
+		<echo message="moving ${loopvar}"/>
+		<move file="${loopvar}" tofile="D:\JUNTAO\jenkins\working\working.reqifz"/>
+		<property name="automaticmetric" value="${preevision-wokspace}" />
+		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+			<property name="data-dir" value="${automaticmetric}" />
+			<property name="plugin-name" value="${plugin-name}" />
+			<property name="classname" value="vi.automatedmetricexecution.metric.AutomatedMetricExecuter" />
+			<property name="test-output" value="${baseDir}/result/AutomatedMetricExecuter.xml" />
+		</ant>
+	</target>
+	
+	<!-- This target holds all initialization code that needs to be done for -->
+	<!-- all tests that are to be run. Initialization for individual tests -->
+	<!-- should be done within the body of the suite target. -->
+	<target name="init">
+		<tstamp />
+		<!-- Set the directory which can be used to store the result.
+			change it to suit you need. -->	
+		<mkdir dir="${baseDir}/result" />
+	</target>
+
+	<!-- PLEASE DO NOT CHANGE ANYTHINGS BELOW -->
+	<!-- This target defines the tests that need to be run. -->
+	<target name="suite">
+		<property name="automaticmetric" value="${preevision-wokspace}" />
+		<antcall target="backup-reqifzs"/>
+		<antcall target="main-loop"/>
+	</target>	
+
+	<!-- This target runs the test suite. Any actions that need to happen -->
+	<!-- after all the tests have been run should go here. -->
+	<target name="run" depends="init,suite">
+		<ant target="collect" antfile="${library-file}" dir="${baseDir}/result">
+			<property name="includes" value="vi*.xml" />
+			<property name="test-output" value="${eclipse-home}/${classname}.xml" />
+			<property name="output-file" value="${plugin-name}.xml" />
+		</ant>
+	</target>
+
+</project>

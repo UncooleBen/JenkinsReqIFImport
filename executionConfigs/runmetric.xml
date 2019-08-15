@@ -22,13 +22,13 @@
 
 	<!-- Set the path of the property file "parameters.properties" in which login data and the metric to be executed are defined -->
 	<!-- An example can be found under ${preevision-home}\res\tools\automatedMetricExecution\executionConfigs\parameters.properties -->
-	<property name="vipropertyfile" value="D:\JUNTAO\jenkins-project-config\executionConfigs\parameters.properties" />
+	<property name="vipropertyfile" value="${baseDir}\executionConfigs\parameters.properties" />
 
 	<!-- DO NOT CHANGE THIS PROPERTY -->
 	<property name="vipropertykey" value="metricExecutorPropetyFile" />
 
 	<!-- Set the path of property file "library.xml". -->
-	<property name="library-file" value="D:\JUNTAO\jenkins-project-config\executionConfigs\library.xml" />
+	<property name="library-file" value="${baseDir}\executionConfigs\library.xml" />
 
 	<!-- DO NOT CHANGE THIS PROPERTY -->
 	<property name="eclipse-home" value="${preevision-home}" />
@@ -39,14 +39,14 @@
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
 
 	<target name="backup-reqifzs">
-		<copy todir="D:\JUNTAO\jenkins\tmp">
-			<fileset dir="D:\JUNTAO\jenkins\reqifzs"/>
+		<copy todir="${baseDir}\tmp">
+			<fileset dir="${baseDir}\reqifzs"/>
 		</copy>
 	</target>
 	
 	<target name="main-loop">
 		<foreach param="loopvar" target="import">
-			<fileset dir="D:\JUNTAO\jenkins\tmp" casesensitive="yes">
+			<fileset dir="${baseDir}\tmp" casesensitive="yes">
 				<include name="*.reqifz"/>
 			</fileset>
 		</foreach>
@@ -54,7 +54,7 @@
 	
 	<target name="import" >
 		<echo message="moving ${loopvar}"/>
-		<move file="${loopvar}" tofile="D:\JUNTAO\jenkins\working\working.reqifz"/>
+		<move file="${loopvar}" tofile="${baseDir}\working\working.reqifz"/>
 		<property name="automaticmetric" value="${preevision-wokspace}" />
 		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="data-dir" value="${automaticmetric}" />

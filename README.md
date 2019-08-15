@@ -95,11 +95,11 @@
 4. Configure runmetric.xml
 	* Open runmetric.xml with notepad++
 	* Edit the following tags' value property
-	* <property name="baseDir" value="JENKINS-PROJECT-LOCATION" /> e.g. 'D:\reqif-jenkins-project'
-	* <property name="preevision-home" value="PREEVISION-9.X-LOCATION" /> e.g. 'D:\Program Files\Vector\PREEvision_v903_x86_64'
-	* <property name="preevision-wokspace" value="PREEVISION-WORKSPACE" /> e.g. 'D:\Program Files\Vector\PREEvision_v903_x86_64_workspace\ws'
-	* <property name="vipropertyfile" value="PAREMETER.PROPERTIES-LOCATION" /> e.g. 'D:\reqif-jenkins-project\executionConfigs\parameters.properties'
-	* <property name="library-file" value="LIBRARY.XML-LOCATION" /> e.g. 'D:\reqif-jenkins-project\executionConfigs\library.xml'
+	* `<property name="baseDir" value="JENKINS-PROJECT-LOCATION" />` e.g. 'D:\reqif-jenkins-project'
+	* `<property name="preevision-home" value="PREEVISION-9.X-LOCATION" />` e.g. 'D:\Program Files\Vector\PREEvision_v903_x86_64'
+	* `<property name="preevision-wokspace" value="PREEVISION-WORKSPACE" />` e.g. 'D:\Program Files\Vector\PREEvision_v903_x86_64_workspace\ws'
+	* `<property name="vipropertyfile" value="PAREMETER.PROPERTIES-LOCATION" />` e.g. 'D:\reqif-jenkins-project\executionConfigs\parameters.properties'
+	* `<property name="library-file" value="LIBRARY.XML-LOCATION" />` e.g. 'D:\reqif-jenkins-project\executionConfigs\library.xml'
 	
 5. Configure parameters.properties
 	* Configure Metrics UUID
